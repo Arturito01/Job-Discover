@@ -1,0 +1,200 @@
+[
+  {
+    "id": "j1",
+    "title": "Senior Flutter Developer",
+    "companyId": "c1",
+    "description": "We are looking for a Senior Flutter Developer to join our mobile team and help build the next generation of developer tools. You will work on our flagship mobile app used by thousands of developers worldwide.",
+    "requirements": [
+      "5+ years of mobile development experience",
+      "3+ years of Flutter/Dart experience",
+      "Strong understanding of state management patterns",
+      "Experience with CI/CD pipelines for mobile apps",
+      "Excellent problem-solving skills"
+    ],
+    "responsibilities": [
+      "Lead development of new mobile features",
+      "Mentor junior developers on Flutter best practices",
+      "Collaborate with design and product teams",
+      "Maintain and improve app performance",
+      "Contribute to technical architecture decisions"
+    ],
+    "benefits": [
+      "Competitive salary + equity",
+      "Remote-first culture",
+      "Unlimited PTO",
+      "Health, dental, and vision insurance",
+      "Annual learning budget",
+      "Home office stipend"
+    ],
+    "type": "fullTime",
+    "workLocation": "remote",
+    "experienceLevel": "senior",
+    "salaryRange": "$150K - $190K",
+    "skills": ["Flutter", "Dart", "Firebase", "REST APIs", "Git"],
+    "postedDaysAgo": 2
+  },
+  {
+    "id": "j2",
+    "title": "Mobile Engineer",
+    "companyId": "c2",
+    "description": "Join our mobile team to build healthcare apps that improve patient outcomes. You will work on our patient-facing app that enables telemedicine visits and health tracking.",
+    "requirements": [
+      "3+ years of mobile development experience",
+      "Experience with Flutter or React Native",
+      "Understanding of HIPAA compliance",
+      "Strong communication skills",
+      "BS in Computer Science or equivalent"
+    ],
+    "responsibilities": [
+      "Develop and maintain mobile applications",
+      "Implement secure authentication flows",
+      "Integrate with health data APIs",
+      "Write unit and integration tests",
+      "Participate in code reviews"
+    ],
+    "benefits": [
+      "Comprehensive health benefits",
+      "Flexible work schedule",
+      "401(k) with company match",
+      "Parental leave",
+      "Wellness programs"
+    ],
+    "type": "fullTime",
+    "workLocation": "hybrid",
+    "experienceLevel": "mid",
+    "salaryRange": "$120K - $150K",
+    "skills": ["Flutter", "React Native", "TypeScript", "Healthcare APIs"],
+    "postedDaysAgo": 5
+  },
+  {
+    "id": "j3",
+    "title": "Lead Frontend Engineer",
+    "companyId": "c3",
+    "description": "We are seeking a Lead Frontend Engineer to drive the development of our trading platform. You will lead a team of engineers and work closely with product to deliver exceptional user experiences.",
+    "requirements": [
+      "7+ years of frontend development experience",
+      "Experience leading engineering teams",
+      "Deep knowledge of React or Flutter",
+      "Understanding of financial systems",
+      "Strong architectural skills"
+    ],
+    "responsibilities": [
+      "Lead a team of 5 frontend engineers",
+      "Define frontend architecture and standards",
+      "Drive technical roadmap planning",
+      "Ensure code quality and performance",
+      "Collaborate with stakeholders across the company"
+    ],
+    "benefits": [
+      "Top-tier compensation package",
+      "Performance bonuses",
+      "Stock options",
+      "Premium healthcare",
+      "Commuter benefits"
+    ],
+    "type": "fullTime",
+    "workLocation": "onSite",
+    "experienceLevel": "lead",
+    "salaryRange": "$180K - $220K",
+    "skills": ["React", "TypeScript", "Flutter", "GraphQL", "Leadership"],
+    "postedDaysAgo": 0
+  },
+  {
+    "id": "j4",
+    "title": "Flutter Developer (Contract)",
+    "companyId": "c4",
+    "description": "We need a Flutter developer for a 6-month contract to help build our carbon tracking app. This is a great opportunity to work on meaningful projects that impact the environment.",
+    "requirements": [
+      "2+ years of Flutter experience",
+      "Published apps on App Store/Play Store",
+      "Experience with geolocation APIs",
+      "Self-motivated and independent",
+      "Available to start immediately"
+    ],
+    "responsibilities": [
+      "Build features for carbon tracking app",
+      "Implement data visualization components",
+      "Optimize app performance",
+      "Write clean, maintainable code",
+      "Collaborate with remote team"
+    ],
+    "benefits": [
+      "Competitive hourly rate",
+      "Flexible schedule",
+      "Work on meaningful projects",
+      "Potential for full-time conversion"
+    ],
+    "type": "contract",
+    "workLocation": "remote",
+    "experienceLevel": "mid",
+    "salaryRange": "$80 - $100/hr",
+    "skills": ["Flutter", "Dart", "Maps API", "Charts", "SQLite"],
+    "postedDaysAgo": 1
+  },
+  {
+    "id": "j5",
+    "title": "Junior Mobile Developer",
+    "companyId": "c5",
+    "description": "Great opportunity for a junior developer to join our mobile team. You will learn from experienced engineers while contributing to real products used by enterprise customers.",
+    "requirements": [
+      "1+ year of programming experience",
+      "Familiarity with Flutter or native mobile development",
+      "Strong desire to learn and grow",
+      "Good communication skills",
+      "CS degree or bootcamp graduate"
+    ],
+    "responsibilities": [
+      "Develop mobile app features under guidance",
+      "Fix bugs and improve code quality",
+      "Write documentation",
+      "Participate in team ceremonies",
+      "Learn from senior engineers"
+    ],
+    "benefits": [
+      "Mentorship program",
+      "Learning and development budget",
+      "Health and dental insurance",
+      "Flexible hours",
+      "Career growth path"
+    ],
+    "type": "fullTime",
+    "workLocation": "hybrid",
+    "experienceLevel": "entry",
+    "salaryRange": "$70K - $90K",
+    "skills": ["Flutter", "Dart", "Git", "Agile"],
+    "postedDaysAgo": 7
+  },
+  {
+    "id": "j6",
+    "title": "Senior iOS/Flutter Developer",
+    "companyId": "c1",
+    "description": "Join our platform team to build SDKs and tools used by mobile developers worldwide. Experience with both native iOS and Flutter required.",
+    "requirements": [
+      "5+ years of mobile development",
+      "Strong Swift and Dart skills",
+      "Experience building SDKs or libraries",
+      "Understanding of mobile architecture patterns",
+      "Open source contributions a plus"
+    ],
+    "responsibilities": [
+      "Build and maintain mobile SDKs",
+      "Write technical documentation",
+      "Support developer community",
+      "Ensure cross-platform compatibility",
+      "Drive API design decisions"
+    ],
+    "benefits": [
+      "Competitive salary + equity",
+      "Remote-first culture",
+      "Conference attendance budget",
+      "Latest hardware provided",
+      "Sabbatical program"
+    ],
+    "type": "fullTime",
+    "workLocation": "remote",
+    "experienceLevel": "senior",
+    "salaryRange": "$160K - $200K",
+    "skills": ["Swift", "Flutter", "Dart", "iOS SDK", "Android SDK"],
+    "postedDaysAgo": 3
+  }
+]

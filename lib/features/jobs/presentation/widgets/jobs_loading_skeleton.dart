@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/theme/theme.dart';
 
-/// Shimmer loading skeleton for job list
+/// Shimmer loading skeleton for job list with staggered fade-in
 class JobsLoadingSkeleton extends StatelessWidget {
   const JobsLoadingSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: AppColors.surfaceVariant,
-      highlightColor: AppColors.surface,
-      child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.xs,
-          AppSpacing.md,
-          AppSpacing.xl,
-        ),
-        itemCount: 5,
-        separatorBuilder: (_, __) => const Gap.sm(),
-        itemBuilder: (_, __) => const _SkeletonCard(),
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.xs,
+        AppSpacing.md,
+        AppSpacing.xl,
       ),
+      itemCount: 5,
+      separatorBuilder: (_, __) => const Gap.sm(),
+      itemBuilder: (_, index) => Shimmer.fromColors(
+        baseColor: AppColors.surfaceVariant,
+        highlightColor: AppColors.surface,
+        child: const _SkeletonCard(),
+      )
+          .animate()
+          .fadeIn(
+            duration: 400.ms,
+            delay: Duration(milliseconds: index * 100),
+          )
+          .slideY(
+            begin: 0.1,
+            end: 0,
+            duration: 400.ms,
+            delay: Duration(milliseconds: index * 100),
+            curve: Curves.easeOutCubic,
+          ),
     );
   }
 }

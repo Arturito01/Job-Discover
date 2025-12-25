@@ -43,8 +43,6 @@ final appliedJobIdsProvider = Provider<Set<String>>((ref) {
 
 /// Apply to job action
 final applyToJobProvider = FutureProvider.autoDispose.family<Application, String>((ref, jobId) async {
-  final jobRepository = ref.read(userRepositoryProvider.select((_) => ref.read(userRepositoryProvider.notifier)));
-  // This is a simplified version - in a real app you'd handle this better
   final repository = ref.read(userRepositoryProvider);
 
   // Get the job first

@@ -1,5 +1,5 @@
-import '../mock/mock_data.dart';
 import '../models/models.dart';
+import '../sources/data_source.dart';
 
 /// Result wrapper for async operations
 sealed class Result<T> {
@@ -17,11 +17,18 @@ class Failure<T> extends Result<T> {
 }
 
 /// Repository for job-related data operations
-/// In a real app, this would call an API service
+/// Uses DataSource abstraction for flexibility between local/remote data
 class JobRepository {
-  /// Simulated network delay for realistic loading states
+  final DataSource _dataSource;
+
+  JobRepository({DataSource? dataSource})
+      : _dataSource = dataSource ?? LocalDataSource();
+
+  /// Simulated network delay for realistic loading states (only for local source)
   Future<void> _simulateNetwork() async {
-    await Future.delayed(const Duration(milliseconds: 800));
+    if (_dataSource is LocalDataSource) {
+      await Future.delayed(const Duration(milliseconds: 600));
+    }
   }
 
   /// Fetch all jobs with optional filters
@@ -34,7 +41,7 @@ class JobRepository {
     try {
       await _simulateNetwork();
 
-      var jobs = List<Job>.from(MockData.jobs);
+      var jobs = await _dataSource.getJobs();
 
       // Apply filters
       if (searchQuery != null && searchQuery.isNotEmpty) {
@@ -72,10 +79,11 @@ class JobRepository {
     try {
       await _simulateNetwork();
 
-      final job = MockData.jobs.firstWhere(
-        (j) => j.id == id,
-        orElse: () => throw Exception('Job not found'),
-      );
+      final job = await _dataSource.getJobById(id);
+
+      if (job == null) {
+        return const Failure('Job not found');
+      }
 
       return Success(job);
     } catch (e) {
@@ -88,10 +96,11 @@ class JobRepository {
     try {
       await _simulateNetwork();
 
-      final job = MockData.jobs.firstWhere(
-        (j) => j.id == jobId,
-        orElse: () => throw Exception('Job not found'),
-      );
+      final job = await _dataSource.getJobById(jobId);
+
+      if (job == null) {
+        return const Failure('Job not found');
+      }
 
       final application = Application(
         id: 'a${DateTime.now().millisecondsSinceEpoch}',
@@ -109,16 +118,15 @@ class JobRepository {
   /// Toggle bookmark status
   Future<Result<Job>> toggleBookmark(String jobId) async {
     try {
-      await Future.delayed(const Duration(milliseconds: 300));
+      await Future.delayed(const Duration(milliseconds: 200));
 
-      final jobIndex = MockData.jobs.indexWhere((j) => j.id == jobId);
-      if (jobIndex == -1) {
+      final job = await _dataSource.getJobById(jobId);
+
+      if (job == null) {
         return const Failure('Job not found');
       }
 
-      final job = MockData.jobs[jobIndex];
       final updatedJob = job.copyWith(isBookmarked: !job.isBookmarked);
-
       return Success(updatedJob);
     } catch (e) {
       return Failure('Failed to update bookmark: ${e.toString()}');

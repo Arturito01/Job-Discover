@@ -254,7 +254,7 @@ class _BookmarkButtonState extends State<_BookmarkButton>
             padding: const EdgeInsets.all(AppSpacing.xs),
             decoration: BoxDecoration(
               color: widget.isBookmarked
-                  ? AppColors.primary.withOpacity(0.1)
+                  ? AppColors.primary.withValues(alpha:0.1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
             ),

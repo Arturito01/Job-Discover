@@ -3,7 +3,21 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter doctor:*)",
+      "Bash(git fetch:*)",
+      "Bash(git reset:*)",
+      "Bash(git remote add:*)",
+      "Bash(flutter --version:*)",
+      "Bash(git checkout:*)",
+      "Bash(flutter precache:*)",
+      "Bash(cat:*)",
+      "Bash(git describe:*)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter create:*)"
     ]
   }
 }

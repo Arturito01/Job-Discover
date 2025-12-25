@@ -4,12 +4,30 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/theme.dart';
+import '../../../../core/widgets/profile_completion_ring.dart';
 import '../../../../data/models/models.dart';
 import '../../providers/profile_providers.dart';
+import '../widgets/profile_skeleton.dart';
 
 /// User profile screen with applied jobs
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
+
+  /// Calculate profile completion percentage based on filled fields
+  double _calculateProfileCompletion(User user) {
+    double score = 0;
+    const totalFields = 6;
+
+    // Check each profile field
+    if (user.name.isNotEmpty) score++;
+    if (user.title.isNotEmpty) score++;
+    if (user.location.isNotEmpty) score++;
+    if (user.bio.isNotEmpty) score++;
+    if (user.skills.isNotEmpty) score++;
+    if (user.avatarUrl.isNotEmpty) score++;
+
+    return score / totalFields;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
       body: SafeArea(
         child: userAsync.when(
           data: (user) => _buildContent(context, user, applicationsAsync),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const ProfileSkeleton(),
           error: (error, _) => _buildError(context, ref),
         ),
       ),
@@ -43,22 +61,23 @@ class ProfileScreen extends ConsumerWidget {
             child: Column(
               children: [
                 const Gap.sm(),
-                // Avatar
-                Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.primary,
-                      width: 3,
+                // Avatar with completion ring
+                ProfileCompletionRing(
+                  progress: _calculateProfileCompletion(user),
+                  size: 100,
+                  strokeWidth: 4,
+                  child: Container(
+                    width: 84,
+                    height: 84,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
                     ),
-                  ),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(user.avatarUrl),
-                    onBackgroundImageError: (_, __) {},
-                    child: const Icon(Icons.person, size: 40),
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(user.avatarUrl),
+                      onBackgroundImageError: (_, __) {},
+                      child: const Icon(Icons.person, size: 40),
+                    ),
                   ),
                 ),
 
@@ -181,7 +200,7 @@ class ProfileScreen extends ConsumerWidget {
                     vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha:0.1),
                     borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                   ),
                   child: Text(

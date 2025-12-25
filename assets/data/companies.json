@@ -1,0 +1,52 @@
+[
+  {
+    "id": "c1",
+    "name": "TechFlow",
+    "logoUrl": "https://ui-avatars.com/api/?name=TF&background=2563EB&color=fff&size=128",
+    "industry": "Technology",
+    "size": "500-1000 employees",
+    "location": "San Francisco, CA",
+    "about": "TechFlow is a leading developer tools company building the future of software development. We create intuitive tools that help developers ship better code faster.",
+    "website": "https://techflow.example.com"
+  },
+  {
+    "id": "c2",
+    "name": "Nimbus Health",
+    "logoUrl": "https://ui-avatars.com/api/?name=NH&background=10B981&color=fff&size=128",
+    "industry": "Healthcare",
+    "size": "200-500 employees",
+    "location": "Boston, MA",
+    "about": "Nimbus Health is transforming healthcare through innovative digital solutions. Our platform connects patients with providers for seamless, personalized care.",
+    "website": "https://nimbushealth.example.com"
+  },
+  {
+    "id": "c3",
+    "name": "Quantum Finance",
+    "logoUrl": "https://ui-avatars.com/api/?name=QF&background=8B5CF6&color=fff&size=128",
+    "industry": "Fintech",
+    "size": "100-200 employees",
+    "location": "New York, NY",
+    "about": "Quantum Finance is a next-generation fintech company democratizing access to investment tools. We believe everyone deserves smart financial guidance.",
+    "website": "https://quantumfinance.example.com"
+  },
+  {
+    "id": "c4",
+    "name": "GreenPath",
+    "logoUrl": "https://ui-avatars.com/api/?name=GP&background=059669&color=fff&size=128",
+    "industry": "Sustainability",
+    "size": "50-100 employees",
+    "location": "Austin, TX",
+    "about": "GreenPath is on a mission to make sustainable living accessible. Our apps help individuals and businesses reduce their environmental footprint.",
+    "website": "https://greenpath.example.com"
+  },
+  {
+    "id": "c5",
+    "name": "DataStream",
+    "logoUrl": "https://ui-avatars.com/api/?name=DS&background=F59E0B&color=fff&size=128",
+    "industry": "Data & Analytics",
+    "size": "200-500 employees",
+    "location": "Seattle, WA",
+    "about": "DataStream provides enterprise-grade data analytics solutions. We help companies turn raw data into actionable insights.",
+    "website": "https://datastream.example.com"
+  }
+]

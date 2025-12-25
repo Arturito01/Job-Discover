@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 abstract final class StorageBoxes {
   static const String jobs = 'jobs';
   static const String bookmarks = 'bookmarks';
+  static const String dismissed = 'dismissed';
   static const String applications = 'applications';
   static const String user = 'user';
   static const String settings = 'settings';
@@ -31,6 +32,7 @@ class StorageService {
     await Future.wait([
       Hive.openBox<Map>(StorageBoxes.jobs),
       Hive.openBox<String>(StorageBoxes.bookmarks),
+      Hive.openBox<String>(StorageBoxes.dismissed),
       Hive.openBox<Map>(StorageBoxes.applications),
       Hive.openBox<Map>(StorageBoxes.user),
       Hive.openBox<dynamic>(StorageBoxes.settings),
@@ -80,6 +82,29 @@ class StorageService {
 
   bool isBookmarked(String jobId) {
     return _bookmarksBox.containsKey(jobId);
+  }
+
+  // Dismissed jobs storage
+  Box<String> get _dismissedBox => Hive.box<String>(StorageBoxes.dismissed);
+
+  Future<void> dismissJob(String jobId) async {
+    await _dismissedBox.put(jobId, jobId);
+  }
+
+  Future<void> restoreJob(String jobId) async {
+    await _dismissedBox.delete(jobId);
+  }
+
+  Future<void> clearDismissed() async {
+    await _dismissedBox.clear();
+  }
+
+  Set<String> getDismissed() {
+    return _dismissedBox.values.toSet();
+  }
+
+  bool isDismissed(String jobId) {
+    return _dismissedBox.containsKey(jobId);
   }
 
   // Applications storage
@@ -162,6 +187,7 @@ class StorageService {
     await Future.wait([
       _jobsBox.clear(),
       _bookmarksBox.clear(),
+      _dismissedBox.clear(),
       _applicationsBox.clear(),
       _userBox.clear(),
       _cacheBox.clear(),

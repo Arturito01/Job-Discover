@@ -44,9 +44,9 @@ class ConnectivityService {
     _connectivity.onConnectivityChanged.listen(_updateStatus);
   }
 
-  void _updateStatus(List<ConnectivityResult> results) {
-    // Consider online if any connection is available
-    final isOnline = results.any((r) => r != ConnectivityResult.none);
+  void _updateStatus(ConnectivityResult result) {
+    // Consider online if connection is available
+    final isOnline = result != ConnectivityResult.none;
     _statusController.add(
       isOnline ? ConnectivityStatus.online : ConnectivityStatus.offline,
     );
@@ -54,7 +54,7 @@ class ConnectivityService {
 
   Future<bool> checkConnection() async {
     final result = await _connectivity.checkConnectivity();
-    return result.any((r) => r != ConnectivityResult.none);
+    return result != ConnectivityResult.none;
   }
 
   void dispose() {

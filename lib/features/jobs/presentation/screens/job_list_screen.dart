@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/storage/settings_provider.dart';
 import '../../../../core/theme/theme.dart';
+import '../../../../core/widgets/animated_gradient_header.dart';
+import '../../../../core/widgets/swipeable_card.dart';
 import '../../providers/job_providers.dart';
 import '../widgets/job_card.dart';
 import '../widgets/job_filter_sheet.dart';
@@ -71,8 +73,10 @@ class _JobListScreenState extends ConsumerState<JobListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final jobsAsync = ref.watch(jobsProvider);
+    final jobsAsync = ref.watch(visibleJobsProvider);
     final filters = ref.watch(jobFiltersProvider);
+    final dismissedCount = ref.watch(dismissedJobsProvider).length;
+    final hapticEnabled = ref.watch(settingsProvider).hapticFeedbackEnabled;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -80,54 +84,64 @@ class _JobListScreenState extends ConsumerState<JobListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with settings button
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.xs,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            // Animated gradient header
+            AnimatedGradientHeader(
+              height: 180,
+              colors: const [
+                Color(0xFF2563EB),
+                Color(0xFF7C3AED),
+                Color(0xFF2563EB),
+              ],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.md,
+                  AppSpacing.md,
+                  AppSpacing.md,
+                  AppSpacing.md,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          'Find your next',
-                          style: AppTypography.bodyLarge.copyWith(
-                            color: AppColors.textSecondary,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Find your next',
+                                style: AppTypography.bodyLarge.copyWith(
+                                  color: Colors.black.withValues(alpha: 0.7),
+                                ),
+                              ),
+                              Text(
+                                'Dream Job',
+                                style: AppTypography.displayLarge.copyWith(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          'Dream Job',
-                          style: AppTypography.displayLarge,
+                        // Settings button
+                        IconButton(
+                          onPressed: () => context.push(AppRoutes.settings),
+                          icon: const Icon(Icons.settings_outlined),
+                          color: Colors.black.withValues(alpha: 0.7),
                         ),
                       ],
                     ),
-                  ),
-                  // Settings button
-                  IconButton(
-                    onPressed: () => context.push(AppRoutes.settings),
-                    icon: const Icon(Icons.settings_outlined),
-                    color: AppColors.textSecondary,
-                  ),
-                ],
-              ),
-            ),
-
-            const Gap.sm(),
-
-            // Search bar
-            Padding(
-              padding: AppSpacing.screenPadding,
-              child: JobSearchBar(
-                onChanged: (query) {
-                  ref.read(jobFiltersProvider.notifier).setSearchQuery(query);
-                },
-                onFilterTap: () => _showFilterSheet(context, ref),
-                filterCount: filters.activeFilterCount,
+                    const Spacer(),
+                    // Search bar inside gradient
+                    JobSearchBar(
+                      onChanged: (query) {
+                        ref.read(jobFiltersProvider.notifier).setSearchQuery(query);
+                      },
+                      onFilterTap: () => _showFilterSheet(context, ref),
+                      filterCount: filters.activeFilterCount,
+                    ),
+                  ],
+                ),
               ),
             ),
 
@@ -140,11 +154,42 @@ class _JobListScreenState extends ConsumerState<JobListScreen> {
                 data: (jobs) => Row(
                   children: [
                     Text(
-                      '${jobs.length} jobs found',
+                      '${jobs.length} jobs',
                       style: AppTypography.bodyMedium,
                     ),
-                    if (filters.hasActiveFilters) ...[
-                      const Spacer(),
+                    if (dismissedCount > 0) ...[
+                      const Gap.xs(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xs,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.textTertiary.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                        ),
+                        child: Text(
+                          '$dismissedCount skipped',
+                          style: AppTypography.labelSmall.copyWith(
+                            color: AppColors.textTertiary,
+                          ),
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    if (dismissedCount > 0)
+                      TextButton(
+                        onPressed: () {
+                          ref.read(dismissedJobsProvider.notifier).clear();
+                        },
+                        child: Text(
+                          'Restore all',
+                          style: AppTypography.labelMedium.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ),
+                    if (filters.hasActiveFilters)
                       TextButton(
                         onPressed: () {
                           ref.read(jobFiltersProvider.notifier).clearFilters();
@@ -156,7 +201,6 @@ class _JobListScreenState extends ConsumerState<JobListScreen> {
                           ),
                         ),
                       ),
-                    ],
                   ],
                 ),
                 loading: () => const SizedBox.shrink(),
@@ -203,10 +247,50 @@ class _JobListScreenState extends ConsumerState<JobListScreen> {
                           );
                         }
 
-                        return JobCard(
-                          job: jobs[index],
-                          // Add staggered animation
-                          animationDelay: Duration(milliseconds: index * 50),
+                        final job = jobs[index];
+                        return SwipeableCard(
+                          enableHaptics: hapticEnabled,
+                          onSwipeRight: () {
+                            // Save/bookmark the job
+                            ref.read(bookmarkedJobsProvider.notifier).add(job.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${job.title} saved!'),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: const Color(0xFF10B981),
+                                duration: const Duration(seconds: 2),
+                                action: SnackBarAction(
+                                  label: 'Undo',
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    ref.read(bookmarkedJobsProvider.notifier).toggle(job.id);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          onSwipeLeft: () {
+                            // Dismiss the job
+                            ref.read(dismissedJobsProvider.notifier).dismiss(job.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${job.title} skipped'),
+                                behavior: SnackBarBehavior.floating,
+                                duration: const Duration(seconds: 2),
+                                action: SnackBarAction(
+                                  label: 'Undo',
+                                  textColor: AppColors.primary,
+                                  onPressed: () {
+                                    ref.read(dismissedJobsProvider.notifier).restore(job.id);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          child: JobCard(
+                            job: job,
+                            animationDelay: Duration(milliseconds: index * 50),
+                          ),
                         );
                       },
                     ),

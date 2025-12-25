@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/network/connectivity_service.dart';
+import '../../../core/services/sync_service.dart';
+import '../../../core/storage/storage_service.dart';
 import '../../../data/models/models.dart';
 import '../../../data/repositories/repositories.dart';
 
@@ -125,15 +128,19 @@ final jobDetailProvider = FutureProvider.autoDispose.family<Job, String>((ref, i
   };
 });
 
-/// Bookmarked jobs state (local only for demo)
+/// Bookmarked jobs state with persistent storage
 final bookmarkedJobsProvider = StateNotifierProvider<BookmarkedJobsNotifier, Set<String>>((ref) {
-  return BookmarkedJobsNotifier();
+  final storage = ref.watch(storageServiceProvider);
+  return BookmarkedJobsNotifier(storage);
 });
 
 class BookmarkedJobsNotifier extends StateNotifier<Set<String>> {
-  BookmarkedJobsNotifier() : super({});
+  final StorageService _storage;
+
+  BookmarkedJobsNotifier(this._storage) : super(_storage.getBookmarks());
 
   void toggle(String jobId) {
+    _storage.toggleBookmark(jobId);
     if (state.contains(jobId)) {
       state = Set.from(state)..remove(jobId);
     } else {
@@ -141,5 +148,94 @@ class BookmarkedJobsNotifier extends StateNotifier<Set<String>> {
     }
   }
 
+  void add(String jobId) {
+    if (!state.contains(jobId)) {
+      _storage.toggleBookmark(jobId);
+      state = Set.from(state)..add(jobId);
+    }
+  }
+
   bool isBookmarked(String jobId) => state.contains(jobId);
 }
+
+/// Dismissed/skipped jobs state with persistent storage
+final dismissedJobsProvider = StateNotifierProvider<DismissedJobsNotifier, Set<String>>((ref) {
+  final storage = ref.watch(storageServiceProvider);
+  return DismissedJobsNotifier(storage);
+});
+
+class DismissedJobsNotifier extends StateNotifier<Set<String>> {
+  final StorageService _storage;
+
+  DismissedJobsNotifier(this._storage) : super(_storage.getDismissed());
+
+  void dismiss(String jobId) {
+    _storage.dismissJob(jobId);
+    state = Set.from(state)..add(jobId);
+  }
+
+  void restore(String jobId) {
+    _storage.restoreJob(jobId);
+    state = Set.from(state)..remove(jobId);
+  }
+
+  void clear() {
+    _storage.clearDismissed();
+    state = {};
+  }
+
+  bool isDismissed(String jobId) => state.contains(jobId);
+}
+
+/// Filtered jobs that excludes dismissed ones
+final visibleJobsProvider = Provider<AsyncValue<List<Job>>>((ref) {
+  final jobsAsync = ref.watch(jobsProvider);
+  final dismissedIds = ref.watch(dismissedJobsProvider);
+
+  return jobsAsync.whenData((jobs) {
+    return jobs.where((job) => !dismissedIds.contains(job.id)).toList();
+  });
+});
+
+/// Offline-aware jobs provider using sync service
+final offlineAwareJobsProvider = FutureProvider.autoDispose<List<Job>>((ref) async {
+  final syncService = ref.watch(syncServiceProvider);
+  final isOnline = ref.watch(isOnlineProvider);
+  final filters = ref.watch(jobFiltersProvider);
+
+  // Get jobs using offline-first strategy
+  var jobs = await syncService.getJobs(forceRefresh: isOnline);
+
+  // Apply filters
+  if (filters.searchQuery.isNotEmpty) {
+    final query = filters.searchQuery.toLowerCase();
+    jobs = jobs.where((job) =>
+        job.title.toLowerCase().contains(query) ||
+        job.company.name.toLowerCase().contains(query) ||
+        job.description.toLowerCase().contains(query)).toList();
+  }
+
+  if (filters.type != null) {
+    jobs = jobs.where((job) => job.type == filters.type).toList();
+  }
+
+  if (filters.workLocation != null) {
+    jobs = jobs.where((job) => job.workLocation == filters.workLocation).toList();
+  }
+
+  if (filters.experienceLevel != null) {
+    jobs = jobs.where((job) => job.experienceLevel == filters.experienceLevel).toList();
+  }
+
+  return jobs;
+});
+
+/// Visible jobs with offline support (excludes dismissed ones)
+final visibleOfflineJobsProvider = Provider<AsyncValue<List<Job>>>((ref) {
+  final jobsAsync = ref.watch(offlineAwareJobsProvider);
+  final dismissedIds = ref.watch(dismissedJobsProvider);
+
+  return jobsAsync.whenData((jobs) {
+    return jobs.where((job) => !dismissedIds.contains(job.id)).toList();
+  });
+});

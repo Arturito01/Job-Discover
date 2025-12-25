@@ -1,0 +1,11 @@
+{
+  "id": "u1",
+  "name": "Alex Johnson",
+  "email": "alex.johnson@email.com",
+  "avatarUrl": "https://ui-avatars.com/api/?name=AJ&background=2563EB&color=fff&size=128",
+  "title": "Senior Mobile Developer",
+  "location": "San Francisco, CA",
+  "bio": "Passionate mobile developer with 6 years of experience building beautiful, performant apps. Currently focused on Flutter and cross-platform development.",
+  "skills": ["Flutter", "Dart", "Swift", "Kotlin", "Firebase", "REST APIs"],
+  "resumeUrl": "https://example.com/resume.pdf"
+}

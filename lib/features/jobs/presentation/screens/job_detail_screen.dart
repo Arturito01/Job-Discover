@@ -1,3 +1,4 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,6 +21,19 @@ class JobDetailScreen extends ConsumerStatefulWidget {
 class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
   bool _isApplying = false;
   bool _hasApplied = false;
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +44,36 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: jobAsync.when(
-        data: (job) => _buildContent(context, job, isBookmarked, hasApplied),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => _buildError(context),
+      body: Stack(
+        children: [
+          jobAsync.when(
+            data: (job) => _buildContent(context, job, isBookmarked, hasApplied),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => _buildError(context),
+          ),
+          // Confetti overlay
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              particleDrag: 0.05,
+              emissionFrequency: 0.05,
+              numberOfParticles: 25,
+              gravity: 0.1,
+              shouldLoop: false,
+              colors: const [
+                Color(0xFF2563EB),
+                Color(0xFF7C3AED),
+                Color(0xFF10B981),
+                Color(0xFFF59E0B),
+                Color(0xFFEF4444),
+              ],
+            ),
+          ),
+        ],
       ),
+      bottomNavigationBar: jobAsync.whenData((job) => _buildBottomBar(job, hasApplied)).value,
     );
   }
 
@@ -172,7 +211,7 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
                         vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: AppColors.primary.withValues(alpha:0.1),
                         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                       ),
                       child: Text(
@@ -282,19 +321,17 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
           ),
         ),
       ],
-      // Fixed apply button
-      // Apply button overlay
     );
   }
 
-  Widget _buildApplyButton(Job job, bool hasApplied) {
+  Widget _buildBottomBar(Job job, bool hasApplied) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: AppColors.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -312,7 +349,7 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
                   minimumSize: const Size.fromHeight(52),
                   backgroundColor: hasApplied ? AppColors.success : AppColors.primary,
                   disabledBackgroundColor:
-                      hasApplied ? AppColors.success : AppColors.primary.withOpacity(0.5),
+                      hasApplied ? AppColors.success : AppColors.primary.withValues(alpha: 0.5),
                 ),
                 child: _isApplying
                     ? const SizedBox(
@@ -323,11 +360,22 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : Text(
-                        hasApplied ? 'Applied ✓' : 'Apply Now',
-                        style: AppTypography.labelLarge.copyWith(
-                          color: Colors.white,
-                        ),
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            hasApplied ? Icons.check_circle : Icons.send_rounded,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          const Gap.xs(),
+                          Text(
+                            hasApplied ? 'Applied' : 'Apply Now',
+                            style: AppTypography.labelLarge.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
               ),
             ),
@@ -349,9 +397,18 @@ class _JobDetailScreenState extends ConsumerState<JobDetailScreen> {
           _hasApplied = true;
         });
 
+        // Trigger confetti celebration!
+        _confettiController.play();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Application submitted successfully!'),
+            content: const Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white, size: 20),
+                Gap.xs(),
+                Text('Application submitted successfully!'),
+              ],
+            ),
             behavior: SnackBarBehavior.floating,
             backgroundColor: AppColors.success,
             shape: RoundedRectangleBorder(
