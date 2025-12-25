@@ -1,0 +1,156 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Job Discover",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+
+  "findYourNext": "Find your next",
+  "dreamJob": "Dream Job",
+
+  "searchPlaceholder": "Search jobs, companies, skills...",
+  "jobsFound": "{count} jobs found",
+  "@jobsFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "clearFilters": "Clear filters",
+  "noMatchingJobs": "No matching jobs",
+  "noJobsAvailable": "No jobs available",
+  "adjustFiltersHint": "Try adjusting your filters to see more results",
+  "pullToRefresh": "Pull down to refresh",
+  "somethingWentWrong": "Something went wrong",
+  "retry": "Retry",
+
+  "filters": "Filters",
+  "clearAll": "Clear all",
+  "workLocation": "Work Location",
+  "jobType": "Job Type",
+  "experienceLevel": "Experience Level",
+  "showResults": "Show Results",
+
+  "remote": "Remote",
+  "hybrid": "Hybrid",
+  "onSite": "On-site",
+  "fullTime": "Full-time",
+  "partTime": "Part-time",
+  "contract": "Contract",
+  "internship": "Internship",
+  "entryLevel": "Entry Level",
+  "midLevel": "Mid Level",
+  "senior": "Senior",
+  "lead": "Lead",
+  "executive": "Executive",
+
+  "aboutThisRole": "About this role",
+  "responsibilities": "Responsibilities",
+  "requirements": "Requirements",
+  "skills": "Skills",
+  "benefits": "Benefits",
+  "aboutCompany": "About {company}",
+  "@aboutCompany": {
+    "placeholders": {
+      "company": {
+        "type": "String"
+      }
+    }
+  },
+  "applyNow": "Apply Now",
+  "applied": "Applied",
+  "applicationSubmitted": "Application submitted successfully!",
+
+  "profile": "Profile",
+  "editProfile": "Edit Profile",
+  "about": "About",
+  "myApplications": "My Applications",
+  "appliedOn": "Applied {date}",
+  "@appliedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noApplicationsYet": "No applications yet",
+  "startExploring": "Start exploring jobs and apply!",
+
+  "pending": "Pending",
+  "reviewed": "Reviewed",
+  "interviewing": "Interviewing",
+  "offered": "Offered",
+  "rejected": "Rejected",
+
+  "settings": "Settings",
+  "appearance": "Appearance",
+  "theme": "Theme",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "preferences": "Preferences",
+  "hapticFeedback": "Haptic Feedback",
+  "vibrateOnInteractions": "Vibrate on interactions",
+  "pushNotifications": "Push Notifications",
+  "getNotifiedAboutJobs": "Get notified about new jobs",
+  "language": "Language",
+  "account": "Account",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "signOutConfirmation": "Are you sure you want to sign out?",
+  "cancel": "Cancel",
+  "aboutApp": "About Job Discover",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+
+  "welcomeBack": "Welcome back",
+  "signInToContinue": "Sign in to continue your job search",
+  "email": "Email",
+  "enterEmail": "Enter your email",
+  "password": "Password",
+  "enterPassword": "Enter your password",
+  "forgotPassword": "Forgot password?",
+  "orContinueWith": "or",
+  "continueWithGoogle": "Continue with Google",
+  "dontHaveAccount": "Don't have an account?",
+  "signUp": "Sign Up",
+
+  "createAccount": "Create Account",
+  "startYourJourney": "Start your job search journey",
+  "fullName": "Full Name",
+  "enterFullName": "Enter your full name",
+  "createPassword": "Create a password",
+  "confirmPassword": "Confirm Password",
+  "confirmYourPassword": "Confirm your password",
+  "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
+  "alreadyHaveAccount": "Already have an account?",
+
+  "resetPassword": "Reset Password",
+  "resetPasswordInstructions": "Enter your email address and we'll send you instructions to reset your password.",
+  "sendResetLink": "Send Reset Link",
+  "backToSignIn": "Back to Sign In",
+  "checkYourEmail": "Check Your Email",
+  "resetEmailSent": "We've sent password reset instructions to:",
+  "didntReceiveEmail": "Didn't receive the email?",
+  "tryDifferentEmail": "Try Different Email",
+
+  "discoverOpportunities": "Discover Opportunities",
+  "discoverOpportunitiesDesc": "Browse thousands of jobs from top companies tailored to your skills and preferences.",
+  "smartFilters": "Smart Filters",
+  "smartFiltersDesc": "Find exactly what you're looking for with powerful filters for location, salary, and job type.",
+  "oneClickApply": "One-Click Apply",
+  "oneClickApplyDesc": "Apply to jobs instantly with your saved profile. Track all your applications in one place.",
+  "skip": "Skip",
+  "next": "Next",
+  "getStarted": "Get Started"
+}
